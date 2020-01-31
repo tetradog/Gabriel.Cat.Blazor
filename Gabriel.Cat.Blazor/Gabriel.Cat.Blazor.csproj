@@ -10,8 +10,10 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseExpression>GNU V3</PackageLicenseExpression>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <RepositoryUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</RepositoryUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Version>1.0.0-preview1</Version>
   </PropertyGroup>
 
 
@@ -20,6 +22,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Documents\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
