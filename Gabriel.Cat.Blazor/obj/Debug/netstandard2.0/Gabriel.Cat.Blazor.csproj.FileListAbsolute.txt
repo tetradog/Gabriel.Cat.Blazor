@@ -1,4 +1,0 @@
-C:\Users\tetra\source\repos\Gabriel.Cat.Blazor\Gabriel.Cat.Blazor\obj\Debug\netstandard2.0\Gabriel.Cat.Blazor.csprojAssemblyReference.cache
-C:\Users\tetra\source\repos\Gabriel.Cat.Blazor\Gabriel.Cat.Blazor\obj\Debug\netstandard2.0\staticwebassets\Gabriel.Cat.Blazor.StaticWebAssets.Manifest.cache
-C:\Users\tetra\source\repos\Gabriel.Cat.Blazor\Gabriel.Cat.Blazor\obj\Debug\netstandard2.0\staticwebassets\Gabriel.Cat.Blazor.StaticWebAssets.xml
-C:\Users\tetra\source\repos\Gabriel.Cat.Blazor\Gabriel.Cat.Blazor\obj\Debug\netstandard2.0\Gabriel.Cat.Blazor.RazorComponent.input.cache

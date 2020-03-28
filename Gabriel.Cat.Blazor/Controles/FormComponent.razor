@@ -1,0 +1,143 @@
+﻿@using System.Linq.Expressions
+@typeparam TValue
+<div class="@classDiv">
+    @if (string.IsNullOrEmpty(CustomName))
+    {
+        <label>@Property:</label>
+    }
+    else
+    {
+        <label>@CustomName:</label>
+    }
+    <div>
+        @switch (TypeName)
+        {
+            case "String":
+                {
+                    <InputText class="@classInput" @bind-Value="@StrProperty" />
+                }
+                break;
+            case "DateTime":
+                {
+                    @if (!string.IsNullOrEmpty(CustomName)&&Gabriel.Cat.S.Extension.ExtensionObject.IsNullableProperty(Model,CustomName)||Gabriel.Cat.S.Extension.ExtensionObject.IsNullableProperty(Model,Property))
+                    {
+                        <InputDate class="@classInput" @bind-Value="@DateNullableProperty" />
+                    }
+                    else
+                    {
+                        <InputDate class="@classInput" @bind-Value="@DateProperty" />
+                    }
+                }
+                break;
+            case "bool":
+            case "Boolean":
+                {
+                    <InputCheckbox class="@classInput" @bind-Value="@BoolProperty" />
+                }
+                break;
+        }
+        <ValidationMessage For="@For" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter] public object Model { get; set; }
+
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string ClassInput { get; set; }
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string CustomName { get; set; }
+    [Parameter] public Type CustomType { get; set; }
+
+    string classInput
+    {
+        get
+        {
+            string classInput = "form-control ";
+            if (!String.IsNullOrEmpty(ClassInput))
+                classInput += ClassInput;
+            return classInput;
+        }
+    }
+    string classDiv
+    {
+        get
+        {
+            string classDiv = "form-group ";
+            if (!String.IsNullOrEmpty(Class))
+                classDiv += Class;
+            return classDiv;
+        }
+    }
+    string Property
+    {
+        get
+        {
+
+            return Gabriel.Cat.Extension.ExtensionExpression.GetPropertyName(For);
+        }
+    }
+    string NameType
+    {
+        get
+        {
+            return Gabriel.Cat.S.Extension.ExtensionObject.GetPropertyType(Model,Property).Name;
+        }
+    }
+    string TypeName => Equals(CustomType, default(Type)) ? NameType : CustomType.Name;
+    object ObjProperty
+    {
+        get
+        {
+            return Gabriel.Cat.S.Extension.ExtensionObject.GetProperty(Model,Property);
+        }
+        set
+        {
+            Gabriel.Cat.S.Extension.ExtensionObject.SetProperty(Model, Property,value);
+
+        }
+    }
+
+    string StrProperty
+    {
+        get { return ObjProperty?.ToString(); }
+        set { ObjProperty = value; }
+    }
+    DateTime DateProperty
+    {
+        get { return (DateTime)ObjProperty; }
+        set { ObjProperty = value; }
+    }
+    DateTime? DateNullableProperty
+    {
+        get { return (DateTime?)ObjProperty; }
+        set { ObjProperty = value; }
+    }
+    bool BoolProperty
+    {
+        get { return (bool)ObjProperty; }
+        set { ObjProperty = value; }
+    }
+
+    public static bool IsCompatible(Type type)
+    {
+        bool compatible;
+        switch (type.Name)
+        {
+            case "String":
+
+            case "DateTime":
+
+            case "bool":
+            case "Boolean":
+                compatible = true;
+                break;
+            default:
+                compatible = false;
+                break;
+        }
+        return compatible;
+    }
+
+}
