@@ -1,0 +1,43 @@
+﻿@if (ShowPagesIfOnlyOne || Pages.Count > 1) {
+<div class="btn-group" role="group">
+    @foreach (TabItem tabPage in Pages)
+    {
+        <button type="button"
+                class="btn @GetButtonClass(tabPage)"
+                @onclick=@( () => ActivatePage(tabPage) )>
+            @tabPage.Text
+        </button>
+    }
+</div>
+}
+<CascadingValue Value="this">
+
+        @ChildContent
+    
+    </CascadingValue>
+@code {  
+        //source:https://blazor-university.com/templating-components-with-renderfragements/creating-a-tabcontrol/
+        // Next line is needed so we are able to add <TabPage> components inside
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool ShowPagesIfOnlyOne { get; set; } = true;
+    public TabItem ActivePage { get; set; }
+    List<TabItem> Pages = new List<TabItem>();
+
+    public void AddPage(TabItem tabItem)
+    {
+        Pages.Add(tabItem);
+        if (Pages.Count == 1)
+            ActivePage = tabItem;
+        StateHasChanged();
+
+    }
+    string GetButtonClass(TabItem page)
+    {
+        return page == ActivePage ? "btn-primary" : "btn-secondary";
+    }
+    void ActivatePage(TabItem page)
+    {
+        ActivePage = page;
+
+    }
+}

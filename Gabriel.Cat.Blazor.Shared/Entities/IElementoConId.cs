@@ -6,6 +6,6 @@ namespace BazorPeliculas.Shared.Entities
 {
     public interface IElementoConId
     {
-        public int Id { get; set; }
+        int Id { get; set; }
     }
 }

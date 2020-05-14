@@ -13,5 +13,9 @@ namespace Gabriel.Cat.Extension
         {
             return await bmp.GetBytes().GetUrl();
         }
+        public static string ToSrcImg(this Bitmap bmp)
+        {
+            return "data:image/png;base64, " + Convert.ToBase64String(bmp.ToStream(System.Drawing.Imaging.ImageFormat.Png).ToArray());
+        }
     }
 }
