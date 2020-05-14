@@ -18,11 +18,12 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Gabriel.Cat.S.Utilitats" Version="1.0.4.4-preview1.0.8" />
+    <PackageReference Include="Gabriel.Cat.Blazor.Shared" Version="1.0.0" />
+    <PackageReference Include="Gabriel.Cat.S.Utilitats" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.1.20124.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.1.20124.5" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0-preview.1.20120.5" />
-    <PackageReference Include="Tewr.Blazor.FileReader" Version="1.4.0.20072" />
+    <PackageReference Include="Tewr.Blazor.FileReader" Version="1.5.0.20109" />
   </ItemGroup>
 
 
@@ -31,11 +32,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\Gabriel.Cat.Blazor.Shared\Gabriel.Cat.Blazor.Shared.csproj" />
   </ItemGroup>
 
 </Project>
