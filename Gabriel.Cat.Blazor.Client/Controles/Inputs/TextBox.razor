@@ -1,0 +1,27 @@
+﻿@using Gabriel.Cat.Blazor.Client.Controles.Inputs
+
+<Microsoft.AspNetCore.Components.Forms.EditForm Model="Data">
+    @if (MultiLine)
+    {
+         <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="Data.Data" />
+    }
+    else
+    {
+        <Microsoft.AspNetCore.Components.Forms.InputTextArea @bind-Value="Data.Data" />
+    }
+
+
+</Microsoft.AspNetCore.Components.Forms.EditForm>
+
+@code {
+    [Parameter] public bool MultiLine { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+    InputData<string> Data{get;set;}
+    protected override  async Task OnInitializedAsync()
+    {
+        Data = new InputData<string>();
+        Data.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
+        await base.OnInitializedAsync();
+    }
+
+}

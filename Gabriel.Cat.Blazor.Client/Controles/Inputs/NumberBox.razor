@@ -1,0 +1,19 @@
+﻿@using Gabriel.Cat.Blazor.Client.Controles.Inputs
+
+<Microsoft.AspNetCore.Components.Forms.EditForm Model="Data">
+<Microsoft.AspNetCore.Components.Forms.InputNumber @bind-Value="Data.Data"/>
+
+
+</Microsoft.AspNetCore.Components.Forms.EditForm>
+
+@code {
+    [Parameter] public EventCallback OnChange { get; set; }
+    InputData<double> Data { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Data = new InputData<double>();
+        Data.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
+        await base.OnInitializedAsync();
+    }
+
+}

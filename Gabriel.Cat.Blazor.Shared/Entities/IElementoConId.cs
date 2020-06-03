@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BazorPeliculas.Shared.Entities
+namespace Gabriel.Cat.Blazor.Shared.Entities
 {
     public interface IElementoConId
     {

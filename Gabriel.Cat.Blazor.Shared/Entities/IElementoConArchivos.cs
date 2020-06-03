@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Gabriel.Cat.S.Extension;
-namespace BazorPeliculas.Shared.Entities
+namespace Gabriel.Cat.Blazor.Shared.Entities
 {
     public interface IElementoConArchivos
     {
         IList<Archivo> Archivos { get; }
     }
-    public struct Archivo
+    public class Archivo
     {
         public Archivo(object obj,string propiedad,string extension)
         {
