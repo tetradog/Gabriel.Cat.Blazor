@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gabriel.Cat.Extension
+namespace Gabriel.Cat.S.Extension
 {
     public static class ExtensionNavigateTo
     {

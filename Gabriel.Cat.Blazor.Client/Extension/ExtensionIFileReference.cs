@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Reader = Blazor.FileReader;
-namespace Gabriel.Cat.Extension
+namespace Gabriel.Cat.S.Extension
 {
     public static class IFileReferenceExtension
     {

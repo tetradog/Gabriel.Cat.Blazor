@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gabriel.Cat.Extension
+namespace Gabriel.Cat.S.Extension
 {
    public static class ExtensionByteArray
     {

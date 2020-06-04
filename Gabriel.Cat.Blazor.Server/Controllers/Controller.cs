@@ -99,7 +99,7 @@ namespace BlazorPeliculas.Server.Controllers
             ActionResult result;
             T tBD = GetItem(item.Id);
 
-            if (tBD != default)
+            if (!Equals(tBD, default))
             {
                 Mapper.Map(item, tBD);
                 await Context.SaveChangesAsync();

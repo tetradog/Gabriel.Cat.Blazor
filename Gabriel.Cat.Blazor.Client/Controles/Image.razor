@@ -1,0 +1,29 @@
+﻿@if (!Equals(ISource, default))
+{
+    <img src="@ISource"/>
+
+}
+else
+{
+    <img/>
+}
+
+
+@code {
+    [Parameter] public Bitmap Picture { get; set; }
+    [Parameter] public string Source { get; set; } = default;
+    string ISource
+    {
+
+        get
+        {
+            string source;
+
+            if (!Equals(Picture, default))
+                source = Picture.ToSrcImg();
+            else source = Source;
+
+            return source;
+        }
+    }
+}

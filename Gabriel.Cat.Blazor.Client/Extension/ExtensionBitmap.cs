@@ -5,7 +5,7 @@ using System.Drawing;
 using Gabriel.Cat.S.Extension;
 using System.Threading.Tasks;
 
-namespace Gabriel.Cat.Extension
+namespace Gabriel.Cat.S.Extension
 {
     public static class ExtensionBitmap
     {
