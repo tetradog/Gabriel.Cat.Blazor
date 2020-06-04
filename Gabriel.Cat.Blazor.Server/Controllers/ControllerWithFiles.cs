@@ -24,7 +24,7 @@ namespace Gabriel.Cat.Blazor.Server.Controllers
         public ControllerWithFiles(TBDContext context, IAlmacenamientoDeArchivos almacenadorDeArchivos, IMapper mapper) : base(context,mapper)
         {
             Almacenamiento = almacenadorDeArchivos;
-            Folder = default;
+            Folder = typeof(T).Name;
         }
 
         public override async Task<ActionResult<int>> Post(T itemConArchivos)
