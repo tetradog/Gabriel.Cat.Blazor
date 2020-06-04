@@ -11,7 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Server.Controllers
+namespace Gabriel.Cat.Blazor.Server.Controllers
 {
     public abstract class Controller<TDbContext,T>:ControllerBase 
         where T :class, IElementoConId,new()

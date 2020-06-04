@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using BlazorPeliculas.Server.Helpers;
-using BlazorPeliculas.Shared;
-using BlazorPeliculas.Shared.Entities;
+using Gabriel.Cat.Blazor.Server.Helpers;
+using Gabriel.Cat.Blazor.Shared;
+using Gabriel.Cat.Blazor.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorPeliculas.Server.Controllers
+namespace Gabriel.Cat.Blazor.Server.Controllers
 {
 
     public abstract class ControllerWithFiles<TBDContext,T> : Controller<TBDContext,T>
@@ -33,7 +33,7 @@ namespace BlazorPeliculas.Server.Controllers
             for(int i=0;i<archivos.Count;i++)
             if (archivos[i].NeedSave)
             {
-                    archivos[i].Url= await Almacenamiento.GuardarArchivo<T>(archivos[i].GetData(), archivos[i].Extension,Folder);
+                    archivos[i].Url= await Almacenamiento.GuardarArchivo(archivos[i].GetData(), archivos[i].Extension,Folder);
                     archivos[i].DataBase64 = default;
             }
             return await base.Post(itemConArchivos);
@@ -48,12 +48,12 @@ namespace BlazorPeliculas.Server.Controllers
                 if (archivos[i].NeedUpdate)
                 {
                     //se tiene que actualizar
-                    archivos[i].Url=await Almacenamiento.EditarArchivo<T>(archivos[i].GetData(), archivos[i].Extension,archivos[i].Url,Folder);
+                    archivos[i].Url=await Almacenamiento.EditarArchivo(archivos[i].GetData(), archivos[i].Extension,archivos[i].Url,Folder);
                 }
                 else if (archivos[i].NeedSave)
                 {
                     //es la primera vez que tiene un elemento
-                    archivos[i].Url = await Almacenamiento.GuardarArchivo<T>(archivos[i].GetData(), archivos[i].Extension,Folder);
+                    archivos[i].Url = await Almacenamiento.GuardarArchivo(archivos[i].GetData(), archivos[i].Extension,Folder);
                 }
                 archivos[i].DataBase64 = default;
        

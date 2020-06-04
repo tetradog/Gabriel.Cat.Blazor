@@ -9,7 +9,7 @@
     {
         <label>@CustomName:</label>
     }
-    @*<div>
+    <div>
         @switch (TypeName)
         {
             case "String":
@@ -37,7 +37,7 @@
                 break;
         }
         <ValidationMessage For="@For" />
-    </div>*@
+    </div>
 </div>
 
 @code {
@@ -75,7 +75,7 @@
         get
         {
 
-            return Gabriel.Cat.Extension.ExtensionExpression.GetPropertyName(For);
+            return Gabriel.Cat.S.Extension.ExtensionExpression.GetPropertyName(For);
         }
     }
     string NameType

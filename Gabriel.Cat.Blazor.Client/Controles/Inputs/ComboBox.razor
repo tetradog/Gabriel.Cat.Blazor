@@ -1,5 +1,5 @@
 ﻿@typeparam T
-<select @bind="@SelectedItem">
+<select @bind="@data.Data">
     @if (!Equals(Source, default))
     {
         <option value="0"></option>
@@ -28,24 +28,14 @@
     [Parameter] public IList<T> Source { get; set; }
     [Parameter] public RenderFragment<T> ChildContent { get; set; }
     [Parameter] public EventCallback<T> OnSelectionChanged { get; set; }
-    int selectedItem = 0;
-    int SelectedItem {
-        get => selectedItem;
-        set
-        {
-            selectedItem = value;
-            if (!Equals(OnSelectionChanged, default))
-            {
-                if (selectedItem == 0)
-                {
-                    OnSelectionChanged.InvokeAsync(default(T));
-                }
-                else
-                {
-                    OnSelectionChanged.InvokeAsync(Source[selectedItem - 1]);
-                }
-            }
-        }
+    InputData<int> data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = new InputData<int>();
+        data.Data = 0;
+        data.PropertyChanged += async (s, e) => await OnSelectionChanged.InvokeAsync(data.Data == 0 ? default(T) : Source[data.Data - 1]);
+        await base.OnInitializedAsync();
     }
 
 }

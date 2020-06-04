@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BazorPeliculas.Server.Helpers
+namespace Gabriel.Cat.Blazor.Server.Helpers
 {
     public class AlmacenaminentoLocal : IAlmacenamientoDeArchivos
     {
