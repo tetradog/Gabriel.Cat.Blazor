@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <Version>1.0.0-Preview1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Gabriel.Cat.Developer</Authors>
+    <Company>Gabriel.Cat.Developer</Company>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</RepositoryUrl>
+    <RepositoryType>GIT</RepositoryType>
   </PropertyGroup>
 
 
@@ -18,6 +27,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gabriel.Cat.Blazor.Shared\Gabriel.Cat.Blazor.Shared.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

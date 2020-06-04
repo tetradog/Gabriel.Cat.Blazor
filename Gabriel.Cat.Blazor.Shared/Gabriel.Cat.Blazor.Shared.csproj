@@ -7,6 +7,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>1.0.1-Preview1</Version>
+    <PackageProjectUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</RepositoryUrl>
   </PropertyGroup>
 
 

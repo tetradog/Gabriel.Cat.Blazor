@@ -5,7 +5,7 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <Authors>Gabriel.Cat.Developer</Authors>
     <Company>Gabriel.Cat.Developer</Company>
-    <Product>Gabriel.Cat.Developer</Product>
+    <Product>Gabriel.Cat.Blazor.Client</Product>
     <PackageProjectUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</PackageProjectUrl>
     <RepositoryType>GIT</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -13,7 +13,7 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <RepositoryUrl>https://github.com/tetradog/Gabriel.Cat.Blazor</RepositoryUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Version>1.0.0-preview4</Version>
+    <Version>1.0.0-preview6</Version>
   </PropertyGroup>
 
 

@@ -1,20 +1,19 @@
-﻿@using Gabriel.Cat.Blazor.Client.Controles.Inputs
-
-    <Microsoft.AspNetCore.Components.Forms.EditForm Model="Data"  style="display:inline" >
+﻿
+    <EditForm Model="Data"  style="display:inline" >
         @if (IsNullable)
         {
-            <Microsoft.AspNetCore.Components.Forms.InputDate @bind-Value="DataNullable.Data"  style="display:inline"  />
+            <InputDate @bind-Value="DataNullable.Data"  style="display:inline"  />
         }
         else
         {
-            <Microsoft.AspNetCore.Components.Forms.InputDate @bind-Value="Data.Data" style="display:inline"  />
+            <InputDate @bind-Value="Data.Data" style="display:inline"  />
         }
 
-    </Microsoft.AspNetCore.Components.Forms.EditForm>
+    </EditForm>
 
 @code {
     [Parameter] public bool IsNullable { get; set; }
-    [Parameter] public EventCallback OnChange { get; set; }
+    [Parameter] public EventCallback<DateTime> OnChange { get; set; }
     [Parameter] public DateTime? InitValue { get; set; }
     InputData<DateTime?> DataNullable { get; set; }
     InputData<DateTime> Data { get; set; }
@@ -32,7 +31,7 @@
             Data.Data = InitValue.Value;
         }
 
-        DataNullable.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
+        DataNullable.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(DataNullable.Data.GetValueOrDefault());
         Data.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
 
         await base.OnInitializedAsync();
