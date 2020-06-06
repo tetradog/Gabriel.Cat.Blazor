@@ -1,7 +1,7 @@
 ﻿
 
 <EditForm Model="Data"  style="display:inline" >
-    @if (MultiLine)
+    @if (!MultiLine)
     {
          <InputText @bind-Value="Data.Data"  style="display:inline" />
     }
@@ -16,7 +16,7 @@
 @code {
     [Parameter] public bool MultiLine { get; set; }
     [Parameter] public string InitValue { get; set; }
-    [Parameter] public EventCallback OnChange { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
     InputData<string> Data{get;set;}
     protected override  async Task OnInitializedAsync()
     {
@@ -25,5 +25,6 @@
         Data.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
         await base.OnInitializedAsync();
     }
+    public void Set(string data) => Data.Data = data;
 
 }

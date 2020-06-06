@@ -8,7 +8,7 @@
             @for (int i = 0; i < Source.Count; i++)
             {
                 <option value="@(i+1)">
-                    ChildContent(Source[i]);
+                    @ChildContent(Source[i])
                 </option>
             }
         }
@@ -17,7 +17,7 @@
             @for (int i = 0; i < Source.Count; i++)
             {
                 <option value="@(i+1)">
-                    @Source[i].ToString();
+                    @Source[i].ToString()
                 </option>
             }
         }

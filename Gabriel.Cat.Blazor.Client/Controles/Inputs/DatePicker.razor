@@ -36,5 +36,6 @@
 
         await base.OnInitializedAsync();
     }
-
+    public void Set(DateTime data) => Data.Data = data;
+    public void Set(DateTime? data) => DataNullable.Data = data;
 }

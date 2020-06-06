@@ -16,5 +16,5 @@
         Data.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
         await base.OnInitializedAsync();
     }
-
+    public void Set(T data) => Data.Data = data;
 }
