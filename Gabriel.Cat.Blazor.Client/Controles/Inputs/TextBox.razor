@@ -1,30 +1,21 @@
 ﻿
+    <Microsoft.AspNetCore.Components.Forms.EditForm Model="@this">
+        @if (!MultiLine)
+        {
+            <InputText @bind-Value="Value" style="display:inline" />
+        }
+        else
+        {
+            <InputTextArea @bind-Value="Value" style="display:inline" />
+        }
+    </Microsoft.AspNetCore.Components.Forms.EditForm>
 
-<EditForm Model="Data"  style="display:inline" >
-    @if (!MultiLine)
-    {
-         <InputText @bind-Value="Data.Data"  style="display:inline" />
-    }
-    else
-    {
-        <InputTextArea @bind-Value="Data.Data"  style="display:inline" />
-    }
-
-
-</EditForm>
 
 @code {
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public bool MultiLine { get; set; }
-    [Parameter] public string InitValue { get; set; }
-    [Parameter] public EventCallback<string> OnChange { get; set; }
-    InputData<string> Data{get;set;}
-    protected override  async Task OnInitializedAsync()
-    {
-        Data = new InputData<string>();
-        Data.Data = InitValue;
-        Data.PropertyChanged += async (s, e) => await OnChange.InvokeAsync(Data.Data);
-        await base.OnInitializedAsync();
-    }
-    public void Set(string data) => Data.Data = data;
 
 }

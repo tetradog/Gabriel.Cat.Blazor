@@ -1,22 +1,27 @@
 ﻿@using Gabriel.Cat.S.Utilitats
 @using Gabriel.Cat.S.Extension
 @typeparam T
+@if (!Equals(Model, default))
+{
     <EditForm Model="@Model" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit">
         <DataAnnotationsValidator />
         @if (Model != null && propiedades != null)
         {
             for (int i = 0; i < propiedades.Count; i++)
             {
-                @if (FormComponent<object>.IsCompatible(Gabriel.Cat.S.Extension.ExtensionObject.GetPropertyType(Model,propiedades[i].Name)))
-                { 
-                    <FormComponent Model="@propiedades[i]" For="@(() => propiedades[i].Property)" CustomName="@propiedades[i].Name" CustomType="@Gabriel.Cat.S.Extension.ExtensionObject.GetPropertyType(Model,propiedades[i].Name)" />
+                @if (FormComponent<object>.IsCompatible(Gabriel.Cat.S.Extension.ExtensionObject.GetPropertyType(Model, propiedades[i].Name)))
+                {
+                    <FormComponent Model="@propiedades[i]" For="@(() => propiedades[i].Property)" CustomName="@propiedades[i].Name" CustomType="@Gabriel.Cat.S.Extension.ExtensionObject.GetPropertyType(Model, propiedades[i].Name)" />
                 }
             }
         }
-        @if(ChildContent!=null)
+        @if (!Equals(ChildContent, default))
+        {
             @ChildContent(Model)
+        }
     <button type="submit" class="btn btn-success">@Guardar</button>
     </EditForm>
+}
 
 @code {
     class PropertyHelper
@@ -47,7 +52,8 @@
 
     protected override void OnInitialized()
     {
-        propiedades = Model.GetPropiedades().Select((p)=>new PropertyHelper(Model,p)).ToList();
+        if(!Equals(Model,default))
+            propiedades = Model.GetPropiedades().Select((p)=>new PropertyHelper(Model,p)).ToList();
     }
 
 }

@@ -1,13 +1,13 @@
 ﻿@typeparam T
-<select @bind="@data.Data">
+<select @bind="@SelectedIndex">
     @if (!Equals(Source, default))
     {
-        <option value="0"></option>
+        <option value="-1"></option>
         @if (!Equals(ChildContent, default))
         {
             @for (int i = 0; i < Source.Count; i++)
             {
-                <option value="@(i+1)">
+                <option value="@i">
                     @ChildContent(Source[i])
                 </option>
             }
@@ -16,7 +16,7 @@
         {
             @for (int i = 0; i < Source.Count; i++)
             {
-                <option value="@(i+1)">
+                <option value="@i">
                     @Source[i].ToString()
                 </option>
             }
@@ -25,17 +25,16 @@
 </select>
 
 @code {
+    [Parameter] public int SelectedIndex { get; set; }
     [Parameter] public IList<T> Source { get; set; }
     [Parameter] public RenderFragment<T> ChildContent { get; set; }
-    [Parameter] public EventCallback<T> OnSelectionChanged { get; set; }
-    InputData<int> data;
 
-    protected override async Task OnInitializedAsync()
+
+    protected override void OnInitialized()
     {
-        data = new InputData<int>();
-        data.Data = 0;
-        data.PropertyChanged += async (s, e) => await OnSelectionChanged.InvokeAsync(data.Data == 0 ? default(T) : Source[data.Data - 1]);
-        await base.OnInitializedAsync();
+        if(Equals(SelectedIndex,default))
+           SelectedIndex = 0;
+        base.OnInitialized();
     }
 
 }
