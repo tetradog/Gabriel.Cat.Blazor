@@ -1,5 +1,5 @@
 ﻿@inherits InputBase<int>
 
 <Microsoft.AspNetCore.Components.Forms.EditForm Model="@this">
-    <Microsoft.AspNetCore.Components.Forms.InputNumber @bind-Value="@Value" style="display:inline" />
+    <Microsoft.AspNetCore.Components.Forms.InputNumber @bind-Value="@Value" style="display:inline"  @oninput="OnValueChanged" />
 </Microsoft.AspNetCore.Components.Forms.EditForm>
