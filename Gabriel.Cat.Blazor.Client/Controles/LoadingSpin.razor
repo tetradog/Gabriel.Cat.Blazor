@@ -1,0 +1,31 @@
+﻿<style>
+    #spinLoader {
+        /*Source center https://devcode.la/tutoriales/como-centrar-un-div-con-css/  */
+    border-radius:50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+</style>
+<div id="spinLoader" style="@StyleStr" />
+
+ @code{
+     [Parameter] public int Width { get; set; } = 150;
+     [Parameter] public int Height { get; set; } = 150;
+     [Parameter] public int Tiempo { get; set; } = 2;
+     [Parameter] public Color ColorFiller { get; set; } = Gabriel.Cat.S.Utilitats.Serializar.ToColor(new byte[] { 0xFF, 0x34, 0x98, 0xDB });
+     [Parameter] public Color ColorEmpty { get; set; } = Gabriel.Cat.S.Utilitats.Serializar.ToColor(new byte[]{0xFF,0xf3, 0xf3, 0xf3});
+     string StyleStr => $"width:{Width}px;height:{Height}px;border:16px solid #{ColorEmpty.ToHtml()}; border-top:16px solid #{ColorFiller.ToHtml()};  animation: spin {Tiempo}s linear infinite;";
+ }
