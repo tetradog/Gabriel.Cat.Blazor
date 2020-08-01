@@ -12,6 +12,15 @@ namespace Gabriel.Cat.Blazor.Client.Controles.Inputs
 
         [Parameter]
         public T Value { get; set; }
+        [Parameter]
+        public EventCallback<T> ValueChanged { get; set; }
+        
+        protected Task OnValueChanged(ChangeEventArgs e)
+        {
+            Value = (T)e.Value;
+
+            return ValueChanged.InvokeAsync(Value);
+        }
 
     }
 }
