@@ -16,7 +16,7 @@ namespace Gabriel.Cat.Blazor.Client.Controles.Inputs
         public EventCallback<T> ValueChanged { get; set; }
         
         protected Task OnValueChanged(ChangeEventArgs e)
-        {
+        {//Gracias a la ayuda de Hazuky de es.StackOverFlow.com por su ayuda en el binding https://es.stackoverflow.com/questions/364370/problema-con-binding-en-blazor
             Value = (T)e.Value;
 
             return ValueChanged.InvokeAsync(Value);
