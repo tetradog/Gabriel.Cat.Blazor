@@ -1,21 +1,19 @@
-﻿
+﻿@inherits InputBase<string>
+     
     <Microsoft.AspNetCore.Components.Forms.EditForm Model="@this">
         @if (!MultiLine)
         {
-            <InputText @bind-Value="Value" style="display:inline" />
+            <InputText @bind-Value="Value" style="display:inline"  @oninput="OnValueChanged"  />
         }
         else
         {
-            <InputTextArea @bind-Value="Value" style="display:inline" />
+            <InputTextArea @bind-Value="Value" style="display:inline"  @oninput="OnValueChanged" />
         }
     </Microsoft.AspNetCore.Components.Forms.EditForm>
 
 
 @code {
-    [Parameter]
-    public string Value { get; set; }
-    [Parameter]
-    public EventCallback<string> ValueChanged { get; set; }
+
     [Parameter] public bool MultiLine { get; set; }
 
 }
