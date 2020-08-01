@@ -1,18 +1,5 @@
-﻿
+﻿@inherits InputBase<DateTime?>
+         
 <Microsoft.AspNetCore.Components.Forms.EditForm Model="@this">
         <Microsoft.AspNetCore.Components.Forms.InputDate @bind-Value="Value" style="display:inline" @oninput="OnValueChanged"  />
     </Microsoft.AspNetCore.Components.Forms.EditForm>
-
-@code{
-    [Parameter]
-    public DateTime? Value { get; set; }
-    [Parameter]
-    public EventCallback<DateTime?> ValueChanged { get; set; }
-            
-    private Task OnValueChanged(ChangeEventArgs e)
-    {
-        Value = (bool)e.Value;
-
-        return ValueChanged.InvokeAsync(Value);
-    }
-}
