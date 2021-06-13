@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Gabriel.Cat.S.Utilitats;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +29,13 @@ namespace EFAuto
         public Context Context { get; private set; }
         public MainWindow()
         {
-          
+            List<Type> tipos = new Type[]{typeof(Aux3),typeof(Ojo),typeof(Aux1)}.AddBaseTypes();
             InitializeComponent();
             //configuro para tener la BD lista
             Context = new Context(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("dbContext").Options);
-            Context.Personas.Add(new Persona());
+            Context.AddObj(new Estudiante());
         }
-    }
+
+}
 
 }
