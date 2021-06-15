@@ -29,7 +29,6 @@ namespace EFAuto
         public Context Context { get; private set; }
         public MainWindow()
         {
-            List<Type> tipos = new Type[]{typeof(Aux3),typeof(Ojo),typeof(Aux1)}.AddBaseTypes();
             InitializeComponent();
             //configuro para tener la BD lista
             Context = new Context(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("dbContext").Options);
