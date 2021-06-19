@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace EFAuto
 {
+
+
     public static class ModelBuilderExtension
     {
         //de momento no funciona bien porque EF no lo usa
@@ -76,14 +78,13 @@ namespace EFAuto
             foreach (Type tipo in types)
             {
 
-                foreach (PropiedadTipo propiedad in tipo.GetPropiedadesTipo())
+                foreach (PropiedadTipo propiedad in tipo.GetPropiedadesTipo().Where(p => p.Tipo.IsGenericType ? !p.Tipo.GetGenericArguments()[0].FullName.Contains(nameof(System)) : !p.Tipo.FullName.Contains(nameof(System))))
                 {
-                    if (propiedad.Tipo.IsTypeValidOne())
-                    {
-                        modelBuilder.Entity(tipo.HeredaDirectoObj() ? tipo : tipo.GenFullType().GetType())
-                                    .Navigation(propiedad.Nombre)
-                                    .UsePropertyAccessMode(PropertyAccessMode.Property);
-                    }
+
+                    modelBuilder.Entity(tipo)
+                                .Navigation(propiedad.Nombre)
+                                .UsePropertyAccessMode(PropertyAccessMode.Property);
+
                 }
             }
         }
@@ -115,10 +116,13 @@ namespace EFAuto
                         propiedadDestino = tipo.GetPropertyNavigation(propiedad);
                         if (propiedadDestino.IsValid)
                         {
+                            //falta cuando hay más de uno pero no hay nombre porque no es un ICollection sino más de una propiedad de ese tipo
                             if (propiedadDestino.IsFromMany)
                             {
+
                                 builder = modelBuilder.Entity(tipo)
-                                                      .HasMany(propiedad.Nombre);
+                                                          .HasMany(propiedad.Nombre);
+
                             }
                             else
                             {
@@ -141,36 +145,69 @@ namespace EFAuto
                         }
 
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+
+                        //   System.Diagnostics.Debugger.Break();
+                    }
                 }
             }
         }
-        public static NavigationProperty GetPropertyNavigation(this Type tipo, PropiedadTipo propiedadTipo)
+        public static NavigationProperty GetPropertyNavigation(this Type tipo, PropiedadTipo propiedadFrom)
         {
+            PropiedadTipo[] foreignKey;
+            Type tipoFrom;
+            string nombrePropiedadDetino;
             NavigationProperty navigation = new NavigationProperty();
             //la propiedad del tipo tiene un Tipo y este puede o no tener navegación hacia esa propiedad,
             //contiene el nombre en caso de 1-n al revés ya es otro tema pero se podria mirar
             //si hay el nombre del tipo en la propiedad del n y si es así es probable que la otra sea el otro tipo
             //tener en cuenta el atributo ForeignKey para saber el nombre ya que puede ser que haya más de una lista y para no tener esa ambiguedad
-            PropiedadTipo foreignKey = propiedadTipo.Tipo.GetPropiedadesTipo()
-                                                             .Where(p => p.Atributos.Where(a => a is ForeignKeyAttribute).Any(a => (a as ForeignKeyAttribute).Name == propiedadTipo.Nombre))
-                                                             .FirstOrDefault() as PropiedadTipo;
-            navigation.IsFromMany = propiedadTipo.Tipo.IsGenericType;
 
-            if (!Equals(foreignKey, default(PropiedadTipo)))
+
+            navigation.IsFromMany = propiedadFrom.Tipo.IsGenericType;
+            if (navigation.IsFromMany)
             {
-                navigation.Nombre = foreignKey.Nombre;
-                navigation.IsValid = true;
-                navigation.IsToMany = foreignKey.Tipo.IsGenericType;
+                tipoFrom = propiedadFrom.Tipo.GetGenericArguments()[0];
 
             }
             else
             {
-                //será por convención o no será
+                tipoFrom = propiedadFrom.Tipo;
 
             }
-            
+            nombrePropiedadDetino = propiedadFrom.Atributos.Where(a => a is ForeignKeyAttribute).Select(a => (a as ForeignKeyAttribute).Name).FirstOrDefault();
+            if (String.IsNullOrEmpty(nombrePropiedadDetino))
+            {
+                nombrePropiedadDetino = propiedadFrom.Nombre;
+                foreignKey = tipoFrom.GetPropiedadesTipo()
+                                                        .Where(p => p.Atributos.Where(a => a is ForeignKeyAttribute).Any(attrPropiedadDestino => (attrPropiedadDestino as ForeignKeyAttribute).Name == nombrePropiedadDetino))
+                                                        .Where(p => p.Tipo.Equals(tipo))
+                                                        .ToArray();
 
+                if (foreignKey.Length == 0)
+                {
+                    foreignKey = tipoFrom.GetPropiedadesTipo()
+                                        .Where(p => p.Nombre.Contains(tipo.Name) && (p.Tipo.IsGenericType ? !p.Tipo.GetGenericArguments()[0].FullName.Contains(nameof(System)) : !p.Tipo.FullName.Contains(nameof(System))))
+                                        .Where(p => !p.Atributos.Any(a => a is ForeignKeyAttribute))
+                                        .ToArray();
+
+                }
+            }
+            else
+            {
+                foreignKey = tipoFrom.GetPropiedadesTipo().Where(p => p.Nombre.Equals(nombrePropiedadDetino)).ToArray();
+            }
+
+
+
+            if (foreignKey.Length != 0)
+            {
+                navigation.Nombre = foreignKey.Length == 1 ? foreignKey[0].Nombre : string.Empty;
+                navigation.IsValid = true;
+                navigation.IsToMany = foreignKey.Length == 1 ? foreignKey[0].Tipo.IsGenericType : true;
+            }
+            //tener en cuenta en el IsValid    HasNavigationFrom osea que 
 
 
 
@@ -182,7 +219,8 @@ namespace EFAuto
             public string Nombre { get; set; }
             public bool IsFromMany { get; set; }
             public bool IsToMany { get; set; }
-            public bool HasNavigationTo => !String.IsNullOrEmpty(Nombre);
+
+            public bool HasNavigationTo => !string.IsNullOrEmpty(Nombre);
         }
     }
 }

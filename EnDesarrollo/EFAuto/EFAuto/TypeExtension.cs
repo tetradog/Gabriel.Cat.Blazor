@@ -105,10 +105,6 @@ namespace EFAuto
                                                             TypeAttributes.AutoLayout
                                                             , null);
             typeBuilder.DefineDefaultConstructor(MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
-            foreach(PropiedadTipo propiedad in tipo.GetPropiedadesTipo())
-            {
-                typeBuilder.AddProperty(propiedad.Nombre, propiedad.Tipo);
-            }
             return typeBuilder;
         }
         static ExpandoObject GetGenOrEmpty(this Type tipo)

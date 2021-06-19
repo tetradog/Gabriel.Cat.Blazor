@@ -19,6 +19,7 @@ namespace EFAuto
 {
     public class Context : DbContextAuto
     {
+        public Context() { }
         public Context([NotNull] DbContextOptions options) : base(options) { }
         public DbSet<Persona> Personas { get; set; }
 
@@ -34,14 +35,15 @@ namespace EFAuto
 
         //metodos de extension bool para desactivarlos privados
         public SortedList<string, Type> Tipos { get; private set; }
+        protected DbContextAuto() : base() { }
         public DbContextAuto([NotNull] DbContextOptions options) : base(options)
         {
             Tipos = new SortedList<string, Type>();
-    
+
             foreach (Type tipo in GetAllTypes())
             {
-                if(!tipo.IsGenericType)
-                   Tipos.Add(tipo.Name, tipo);
+                if (!tipo.IsGenericType)
+                    Tipos.Add(tipo.Name, tipo);
             }
         }
         public EntityEntry AddObj([NotNull] object obj)
@@ -53,6 +55,7 @@ namespace EFAuto
                 throw new NotSupportedException($"No se puede añadir el tipo {tipo} porque no hereda directamente de {typeof(object)}");
             }
             return Add(obj);
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -95,20 +98,31 @@ namespace EFAuto
         public int EstudianteId { get; set; }
         public Estudiante Estudiante { get; set; }
         public int? IzquierdoId { get; set; }
+        [ForeignKey(nameof(EFAuto.Ojo.Persona))]
         public Ojo Izquierdo { get; set; }
         public int? DerechoId { get; set; }
+        [ForeignKey(nameof(EFAuto.Ojo.Persona))]
         public Ojo Derecho { get; set; }
         public int? BocaId { get; set; }
         public Boca Boca { get; set; }
-        public ICollection<Estudiante> Estudiantes { get; set; }
+        [ForeignKey(nameof(EFAuto.PersonaEstudiante.Persona))]
+        public ICollection<PersonaEstudiante> Estudiantes { get; set; }
 
+    }
+    public class PersonaEstudiante
+    {
+        public int PersonaId { get; set; }
+        public Persona Persona { get; set; }
+        public int EstudianteId { get; set; }
+        public Estudiante Estudiante { get; set; }
     }
     public class Estudiante
     {
         public int Id { get; set; }
         public int PersonaId { get; set; }
         public Persona Persona { get; set; }
-        public ICollection<Persona> Profesores { get; set; }
+        [ForeignKey(nameof(EFAuto.PersonaEstudiante.Estudiante))]
+        public ICollection<PersonaEstudiante> Profesores { get; set; }
 
     }
     public class Ojo
@@ -123,6 +137,7 @@ namespace EFAuto
         public int Id { get; set; }
         public int PersonaId { get; set; }
         public Persona Persona { get; set; }
+        [ForeignKey(nameof(EFAuto.Diente.Boca))]
         public ICollection<Diente> Dientes { get; set; }
     }
     public class Diente
@@ -131,4 +146,5 @@ namespace EFAuto
         public int Posicion { get; set; }
         public Boca Boca { get; set; }
     }
+
 }

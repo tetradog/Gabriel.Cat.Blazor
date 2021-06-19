@@ -32,7 +32,7 @@ namespace EFAuto
             InitializeComponent();
             //configuro para tener la BD lista
             Context = new Context(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("dbContext").Options);
-            Context.AddObj(new Estudiante());
+            Context.AddObj(new Estudiante() { Persona=new Persona()});
         }
 
 }
