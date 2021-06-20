@@ -14,7 +14,7 @@ namespace EFAuto
         public static IEnumerable<Type> GetAllTypes(this DbContext context)
         {
             SortedList<string, Type> dicTipos;
-            PropiedadTipo[] propiedades = context.GetType().GetPropiedadesTipoAncestro()
+            PropiedadTipo[] propiedades = context.GetType().GetPropiedadesTipo()
                                                             .Where(p => p.Tipo.IsGenericType && p.Tipo.GetGenericTypeDefinition().Equals(typeof(DbSet<>)))
                                                             .ToArray();
             Type[] propiedadesAux= propiedades.Select(p => p.Tipo.GetGenericArguments()[0])

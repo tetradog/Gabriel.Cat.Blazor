@@ -30,22 +30,19 @@ namespace EFAuto
             base.OnConfiguring(optionsBuilder);
         }
     }
-    public class DbContextAuto : DbContext
+    public abstract class DbContextAuto : DbContext
     {
 
         //metodos de extension bool para desactivarlos privados
-        public SortedList<string, Type> Tipos { get; private set; }
-        protected DbContextAuto() : base() { }
+        public   SortedList<string, Type> Tipos { get; private set; }
+
+
+        protected DbContextAuto() : base() { InitFillDicTypes(); }
         public DbContextAuto([NotNull] DbContextOptions options) : base(options)
         {
-            Tipos = new SortedList<string, Type>();
-
-            foreach (Type tipo in GetAllTypes())
-            {
-                if (!tipo.IsGenericType)
-                    Tipos.Add(tipo.Name, tipo);
-            }
+            InitFillDicTypes();
         }
+
         public EntityEntry AddObj([NotNull] object obj)
         {
 
@@ -64,12 +61,17 @@ namespace EFAuto
 
 
             base.OnModelCreating(modelBuilder);
-
+            //configuro los que tienen más de una Key
+            ConfigureKeys(modelBuilder, allTableTypes);
             ////relaciones
             AddRelations(modelBuilder, allTableTypes);
             AddNavigation(modelBuilder, allTableTypes);
 
 
+        }
+        protected virtual void ConfigureKeys(ModelBuilder modelBuilder,IList<Type> allTypes)
+        {
+            modelBuilder.ConfigureKeys(allTypes);
         }
 
         protected virtual void AddRelations(ModelBuilder modelBuilder, IList<Type> allTableTypes)
@@ -87,7 +89,16 @@ namespace EFAuto
             modelBuilder.AddNavigation(types);
         }
 
+        private void InitFillDicTypes()
+        {
+            Tipos = new SortedList<string, Type>();
 
+            foreach (Type tipo in GetAllTypes())
+            {
+                if (!tipo.IsGenericType)
+                    Tipos.Add(tipo.Name, tipo);
+            }
+        }
 
 
     }
@@ -144,6 +155,7 @@ namespace EFAuto
     {
         [Key]
         public int Posicion { get; set; }
+        public int BocaId { get; set; }
         public Boca Boca { get; set; }
     }
 

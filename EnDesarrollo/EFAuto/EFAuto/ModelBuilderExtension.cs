@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
 using System.Linq;
-
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -94,6 +94,36 @@ namespace EFAuto
         {
             return modelBuilder.Entity(entity).Metadata.GetDeclaredProperties().Any(p => p.Name.Equals(name)) || entity.GetPropiedadesTipo().Any(p => p.Nombre == name);
         }
+        public static void ConfigureKeys(this ModelBuilder modelBuilder,IList<Type> types)
+        {
+            MethodInfo method;
+            MethodInfo generic;
+
+            method = typeof(ModelBuilderExtension).GetMethod(nameof(IConfigureKey), BindingFlags.Static | BindingFlags.NonPublic);
+            for (int i = 0; i < types.Count; i++)
+            {
+                generic = method.MakeGenericMethod(types[i]);
+                generic.Invoke(null, new object[] { modelBuilder });
+            }
+        }
+        public static void ConfigureKey<TEntity>(this ModelBuilder modelBuilder) where TEntity : class, new()
+        {
+            modelBuilder.IConfigureKey<TEntity>();
+        }
+        private static void IConfigureKey<TEntity>(this ModelBuilder modelBuilder) where TEntity : class, new()
+        {
+            const string KEY = nameof(KeyAttribute);
+            IList<PropiedadTipo> propiedades = typeof(TEntity).GetPropiedadesTipo();
+            List<string> keys = new List<string>();
+            for (int i = 0; i < propiedades.Count; i++)
+            {
+                if (propiedades[i].Atributos.Any(attr => attr.GetType().Name == KEY))
+                    keys.Add(propiedades[i].Nombre);
+            }
+            if (keys.Count > 1)
+                modelBuilder.Entity<TEntity>().HasKey(keys.ToArray());
+
+        }
         public static void ConfigureRelationTypes(this ModelBuilder modelBuilder, IList<Type> types)
         {
             Type tipo;
@@ -133,14 +163,23 @@ namespace EFAuto
                             if (propiedadDestino.IsToMany)
                             {
                                 if (propiedadDestino.HasNavigationTo)
-                                    builder.WithMany(propiedadDestino.Nombre);
-                                else builder.WithMany();
+                                    builder = builder.WithMany(propiedadDestino.Nombre);
+                                else builder = builder.WithMany();
                             }
                             else
                             {
                                 if (propiedadDestino.HasNavigationTo)
-                                    builder.WithOne(propiedadDestino.Nombre);
-                                else builder.WithOne();
+                                    builder = builder.WithOne(propiedadDestino.Nombre);
+                                else builder = builder.WithOne();
+                            }
+                            if (propiedadDestino.HasNavigationTo)
+                            {
+                                
+                                     if(propiedadDestino.HasIdProperty)
+                                      builder.HasForeignKey(propiedad.Tipo,propiedadDestino.NombreId);
+                                    else builder.HasForeignKey(propiedadDestino.Nombre);
+
+
                             }
                         }
 
@@ -148,7 +187,7 @@ namespace EFAuto
                     catch (Exception ex)
                     {
 
-                        //   System.Diagnostics.Debugger.Break();
+                        System.Diagnostics.Debugger.Break();
                     }
                 }
             }
@@ -206,6 +245,10 @@ namespace EFAuto
                 navigation.Nombre = foreignKey.Length == 1 ? foreignKey[0].Nombre : string.Empty;
                 navigation.IsValid = true;
                 navigation.IsToMany = foreignKey.Length == 1 ? foreignKey[0].Tipo.IsGenericType : true;
+                if (navigation.HasNavigationTo)
+                {
+                    navigation.NombreId = tipoFrom.GetPropiedadesTipo().Where(p => p.Nombre.ToLower() == navigation.CalcNombreId).Select(p => p.Nombre).FirstOrDefault();
+                }
             }
             //tener en cuenta en el IsValid    HasNavigationFrom osea que 
 
@@ -217,9 +260,11 @@ namespace EFAuto
         {
             public bool IsValid { get; set; }
             public string Nombre { get; set; }
+            public string CalcNombreId => $"{Nombre}Id".ToLower();
+            public string NombreId { get; set; }
             public bool IsFromMany { get; set; }
             public bool IsToMany { get; set; }
-
+            public bool HasIdProperty => !string.IsNullOrEmpty(NombreId);
             public bool HasNavigationTo => !string.IsNullOrEmpty(Nombre);
         }
     }
